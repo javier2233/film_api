@@ -1,0 +1,19 @@
+FilmApi\Domain\Film:
+  type: entity
+  table: films
+  id:
+    id:
+      type: integer
+      generator: { strategy: AUTO }
+  fields:
+    name:
+      type: string
+      length: 255
+    description:
+      type: text
+  manyToOne:
+    actor:
+      targetEntity: Actor
+      joinColumn:
+        name: actor
+        referencedColumnName: id

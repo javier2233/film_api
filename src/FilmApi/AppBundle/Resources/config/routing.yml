@@ -1,0 +1,65 @@
+actor_create:
+  path: /actor/add/
+  defaults: { _controller: \FilmApi\AppBundle\Controller\ActorController::createActor }
+  methods: [POST]
+
+delete_create:
+  path: /actor/delete/{id}
+  defaults: { _controller: \FilmApi\AppBundle\Controller\ActorController::deleteActor }
+  methods: [DELETE]
+  requirements:
+    id: '\d+'
+
+all_create:
+  path: /actor/all/
+  defaults: { _controller: \FilmApi\AppBundle\Controller\ActorController::AllActor }
+  methods: [POST]
+
+film_create:
+  path: /film/add/
+  defaults: { _controller: \FilmApi\AppBundle\Controller\FilmController::createFilm }
+  methods: [POST]
+
+film_update:
+  path: /film/update/
+  defaults: { _controller: \FilmApi\AppBundle\Controller\FilmController::updateFilm }
+  methods: [POST]
+
+film_delete:
+  path: /film/delete/{id}
+  defaults: { _controller: \FilmApi\AppBundle\Controller\FilmController::DeleteFilm }
+  methods: [DELETE]
+  requirements:
+    id: '\d+'
+
+film_all:
+  path: /film/all/
+  defaults: { _controller: \FilmApi\AppBundle\Controller\FilmController::AllFilm }
+  methods: [POST]
+
+
+films_template:
+  path: /films/
+  defaults: { _controller: AppBundle:Film:FilmsList }
+  methods: [GET]
+
+actors_template:
+  path: /actors/
+  defaults: { _controller: AppBundle:Actor:ActorsList }
+  methods: [GET]
+
+film_template:
+  path: /{_locale}/films/{id}
+  defaults: { _controller: AppBundle:Film:FilmDetail }
+  methods: [GET]
+  requirements:
+    id: '\d+'
+    _locale: en|es
+
+actor_template:
+  path: /{_locale}/actors/{id}
+  defaults: { _controller: AppBundle:Actor:ActorDetail }
+  methods: [GET]
+  requirements:
+    id: '\d+'
+    _locale: en|es

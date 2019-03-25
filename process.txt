@@ -1,0 +1,3 @@
+
+
+* crear entidades y metodos para validar sus propiedad getters yu setters constructor

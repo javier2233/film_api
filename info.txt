@@ -1,0 +1,11 @@
+
+
+Además, se deberá permitir realizar todas las operaciones CRUD de Film por consola mediante operaciones por la consola (bin/console) de Symfony.
+
+
+Deberás entregar la URL del repositorio de este entregable. Si es un repositorio privado, deberás dar acceso de lectura al mentor de la asignatura.
+
+
+minuto. 16 35
+
+minuto 26 35

@@ -1,0 +1,87 @@
+parameters:
+
+services:
+  filmapi.repository.actor:
+    class: FilmApi\AppBundle\Repository\MySQLActorRepository
+    public: false
+    arguments:
+      - "@doctrine.orm.default_entity_manager"
+
+  filmapi.repository.film:
+    class: FilmApi\AppBundle\Repository\MySQLFilmRepository
+    public: false
+    arguments:
+      - "@doctrine.orm.default_entity_manager"
+
+  actor.command_handler.create_actor:
+    class: FilmApi\Application\CommandHandler\Actor\CreateActorHandler
+    public: true
+    arguments:
+      - "@filmapi.repository.actor"
+
+  actor.command_handler.delete_actor:
+    class: FilmApi\Application\CommandHandler\Actor\DeleteActorHandler
+    public: true
+    arguments:
+      - "@filmapi.repository.actor"
+
+  actor.command_handler.all_actor:
+    class: FilmApi\Application\CommandHandler\Actor\AllActorHandler
+    public: true
+    arguments:
+      - "@filmapi.repository.actor"
+
+  actor.command_handler.get_actor:
+    class: FilmApi\Application\CommandHandler\Actor\GetActorHandler
+    public: true
+    arguments:
+      - "@filmapi.repository.actor"
+
+  actor.actor_repository.cached:
+    class: FilmApi\AppBundle\Repository\CacheActorRepository
+    public: true
+    decorates: actor.command_handler.get_actor
+    arguments:
+      - "@filmapi.repository.actor"
+      - "@cache.app"
+      - "@actor.actor_repository.cached.inner"
+
+  film.command_handler.create_film:
+    class: FilmApi\Application\CommandHandler\Film\CreateFilmHandler
+    public: true
+    arguments:
+      - "@filmapi.repository.film"
+      - '@actor.command_handler.get_actor'
+
+  film.command_handler.update_film:
+    class: FilmApi\Application\CommandHandler\Film\UpdateFilmHandler
+    public: true
+    arguments:
+      - "@filmapi.repository.film"
+      - '@actor.command_handler.get_actor'
+
+  film.command_handler.delete_film:
+    class: FilmApi\Application\CommandHandler\Film\DeleteFilmHandler
+    public: true
+    arguments:
+      - "@filmapi.repository.film"
+
+  film.command_handler.get_film:
+    class: FilmApi\Application\CommandHandler\Film\GetFilmHandler
+    public: true
+    arguments:
+      - "@filmapi.repository.film"
+
+  film.film_repository.cached:
+    class: FilmApi\AppBundle\Repository\CacheFilmRepository
+    public: true
+    decorates: film.command_handler.get_film
+    arguments:
+      - "@filmapi.repository.film"
+      - "@cache.app"
+
+  film.command_handler.all_film:
+    class: FilmApi\Application\CommandHandler\Film\AllFilmHandler
+    public: true
+    arguments:
+      - "@filmapi.repository.film"
