@@ -21,11 +21,13 @@ class MySQLFilmRepository implements FilmRepository
     public function __construct(EntityManagerInterface $entityManager)
     {
         $this->em = $entityManager;
+
     }
 
     public function save(Film $film): void
     {
         $this->em->persist($film);
+        $this->em->flush();
 
     }
 

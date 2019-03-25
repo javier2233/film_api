@@ -3,7 +3,7 @@ parameters:
 services:
   filmapi.repository.actor:
     class: FilmApi\AppBundle\Repository\MySQLActorRepository
-    public: false
+    public: true
     arguments:
       - "@doctrine.orm.default_entity_manager"
 
@@ -17,11 +17,14 @@ services:
     class: FilmApi\Application\CommandHandler\Actor\CreateActorHandler
     public: true
     arguments:
-      - "@filmapi.repository.actor"
+       - "@filmapi.repository.actor"
 
+  FilmApi\Application\CommandHandler\Actor\CreateActorHandler: '@actor.command_handler.create_actor'
+  FilmApi\AppBundle\Repository\MySQLActorRepository: '@filmapi.repository.actor'
   actor.command_handler.delete_actor:
     class: FilmApi\Application\CommandHandler\Actor\DeleteActorHandler
     public: true
+
     arguments:
       - "@filmapi.repository.actor"
 
@@ -37,14 +40,18 @@ services:
     arguments:
       - "@filmapi.repository.actor"
 
+
   actor.actor_repository.cached:
     class: FilmApi\AppBundle\Repository\CacheActorRepository
     public: true
     decorates: actor.command_handler.get_actor
     arguments:
-      - "@filmapi.repository.actor"
-      - "@cache.app"
-      - "@actor.actor_repository.cached.inner"
+    - "@filmapi.repository.actor"
+    - "@cache.app"
+    - "@actor.actor_repository.cached.inner"
+
+  FilmApi\Application\CommandHandler\Actor\GetActorHandler: '@actor.command_handler.get_actor'
+  FilmApi\AppBundle\Repository\CacheActorRepository: '@actor.actor_repository.cached'
 
   film.command_handler.create_film:
     class: FilmApi\Application\CommandHandler\Film\CreateFilmHandler
@@ -52,6 +59,8 @@ services:
     arguments:
       - "@filmapi.repository.film"
       - '@actor.command_handler.get_actor'
+
+  FilmApi\Application\CommandHandler\Film\CreateFilmHandler: '@film.command_handler.create_film'
 
   film.command_handler.update_film:
     class: FilmApi\Application\CommandHandler\Film\UpdateFilmHandler
@@ -85,3 +94,19 @@ services:
     public: true
     arguments:
       - "@filmapi.repository.film"
+
+  app.command.actor.create:
+    class: FilmApi\AppBundle\Command\ActorCreateCommand
+    arguments:
+      - "@actor.command_handler.create_actor"
+    tags:
+      - { name: console.command }
+
+  app.command.film.create:
+    class: FilmApi\AppBundle\Command\FilmCreateCommand
+    arguments:
+      - "@film.command_handler.create_film"
+      - "@actor.actor_repository.cached"
+    tags:
+      - { name: console.command }
+

@@ -27,6 +27,7 @@ class MySQLActorRepository implements ActorRepository
     public function save(Actor $actor):void
     {
         $this->em->persist($actor);
+        $this->em->flush();
 
     }
     public function delete(int $id):void
